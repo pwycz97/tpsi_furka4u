@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+    <head>
+        <title>Lista ofert</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    </head>
+    <body>
+        <section layout:fragment="content">
+            <form id="offerFilterForm" action="/" method="get" class="form-inline" th:object="${offerFilter}">
+            <div id="offerFilter" class="panel panel-default">
+                <div class="panel-heading">Szukaj ofert</div>
+                <div class="panel-body">
+                    
+                        <select class="form-control" th:field="*{manufacturerId}">
+                            <option value="">Wybierz markę:</option>
+                            <option th:each="manufacturer : ${carManufacturers}" th:value="${manufacturer.id}" th:text="${manufacturer.name}"></option>
+                        </select>
+                        <select class="form-control" th:field="*{modelId}">
+                            <option value="">Wybierz model:</option>
+                            <option th:each="model : ${carModels}" th:if="${model.id}" th:value="${model.id}" th:text="${model.name}"></option>
+                        </select>
+                        
+                        <input type="number" class="form-control" placeholder="Data produkcji od" th:field="*{yearFrom}" /> - <input type="number" class="form-control" placeholder="Data produkcji do" th:field="*{yearTo}"/>
+            <br/>
+            <br/>
+                        <input type="number" class="form-control" placeholder="Cena od" th:field="*{priceFrom}" /> - <input type="number" class="form-control" placeholder="Cena do" th:field="*{priceTo}"/>
+                        
+                        <select class="form-control" th:field="*{fuelTypeId}">
+                            <option value="">Wybierz paliwo:</option>
+                            <option th:each="fuel : ${fuelTypes}" th:value="${fuel.id}" th:text="${fuel.name}"></option>
+                        </select> 
+                        
+                        <input type="text" class="form-control" placeholder="Patrz po opisie..." th:field="*{opis}"/>
+                        <input type="submit" value="Filtruj" class="form-control btn-default"/>
+                    
+                </div>
+            </div>
+                <select class="form-control" th:field="*{sort}">
+                    <option value="">Sortuj wg:</option>
+                    <option th:value="date_asc">Data dodania od najstarszego</option>
+                    <option th:value="date_desc">Data dodania od najmłodszego</option>
+                    <option th:value="year_asc">Rocznik rosnąco</option>
+                    <option th:value="year_desc">Rocznik malejąco</option>
+                    <option th:value="price_asc">Cena rosnąco</option>
+                    <option th:value="price_desc">Cena malejąco</option>
+                </select> 
+                        <input type="submit" value="Sortuj" class="form-control btn-default"/>
+            </form>
+            
+            <table class="table">
+                <tr>
+                    <th>Tytuł</th>
+                    <th>Data dodania</th>
+                    <th>Marka</th>
+                    <th>Model</th>
+                    <th>Rok produkcji</th>
+                    <th>Cena</th>
+                    <th></th>
+                </tr>
+                <tr th:each="offer : ${offers}">
+                    <td th:text="${offer.title}"></td>
+                    <td th:text="${offer.date}">Data</td>
+                    <td th:text="${offer.model.manufacturer.name}"></td>
+                    <td th:text="${offer.model.name}"></td>
+                    <td th:text="${offer.year}"></td>
+                    <td class="text-right">
+                        <span th:text="${#numbers.formatDecimal(offer.price, 0, 'WHITESPACE', 0,'COMMA')}"></span>
+                        zł
+                    </td>
+                    <td><a th:href="|/offer/${offer.id}|">Pokaż</a></td>
+                </tr>
+            </table>
+        </section>
+    </body>
+</html>
