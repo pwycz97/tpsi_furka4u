@@ -168,10 +168,12 @@ public class Offer {
     @Column(name = "mileage")
     private Integer mileage;
 
+    @NotNull
     @Min(0)
     @Column(name = "engine_size")
     private BigDecimal engineSize;
 
+    @NotNull
     @Min(0)
     @Column(name = "engine_power")
     private Integer enginePower;

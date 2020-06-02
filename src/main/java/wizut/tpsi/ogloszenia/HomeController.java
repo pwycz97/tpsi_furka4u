@@ -108,12 +108,11 @@ public class HomeController {
         
         if (binding.hasErrors()) {
             
-            List<ObjectError> error = binding.getAllErrors();
+            List<ObjectError> errors = binding.getAllErrors();
             List<CarModel> carModels = offersService.getCarModels();
             List<BodyStyle> bodyStyles = offersService.getBodyStyles();
             List<FuelType> fuelTypes = offersService.getFuelTypes();
 
-            
             
             model.addAttribute("carModels", carModels);
             model.addAttribute("bodyStyles", bodyStyles);
